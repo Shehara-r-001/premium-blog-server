@@ -37,3 +37,12 @@ export const ArticlesController = async (req: Request, res: Response) => {
     return res.status(200).json(articles);
   }
 };
+
+export const ArticleController = async (req: Request, res: Response) => {
+  try {
+    const article = await Article.findOne({ _id: req.params.id });
+    res.status(200).json(article);
+  } catch (error) {
+    console.log(error);
+  }
+};
