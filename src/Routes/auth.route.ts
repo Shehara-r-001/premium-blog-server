@@ -5,6 +5,10 @@ import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 import { checkAuth } from '../middleware/checkAuth';
 import { stripe } from '../utils/stripe';
+import {
+  SignInController,
+  UserController,
+} from '../controllers/auth.controller';
 
 const router = express.Router();
 
@@ -80,75 +84,8 @@ router.post(
   }
 );
 
-router.post('/signin', async (req, res) => {
-  const { email, password } = req.body;
+router.post('/signin', SignInController);
 
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return res.status(401).json({
-      errors: [
-        {
-          msg: 'Invalid credentials..',
-        },
-      ],
-      data: null,
-    });
-  }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-
-  if (!isMatch) {
-    return res.status(401).json({
-      errors: [
-        {
-          msg: 'Invalid credentials..',
-        },
-      ],
-      data: null,
-    });
-  }
-
-  const token = await JWT.sign(
-    {
-      email: user.email,
-    },
-    process.env.JWT_SECRET as string,
-    {
-      expiresIn: 36000,
-    }
-  );
-
-  return res.status(200).json({
-    errors: [],
-    data: {
-      token,
-      user: {
-        id: user._id,
-        email: user.email,
-      },
-    },
-  });
-});
-
-router.get(
-  '/user',
-  checkAuth,
-
-  async (req: express.Request, res: express.Response) => {
-    const user = await User.findOne({ email: req.user });
-
-    return res.status(200).json({
-      errors: [],
-      data: {
-        user: {
-          id: user?._id,
-          email: user?.email,
-          stripeCustomerID: user?.stripeCustomerID,
-        },
-      },
-    });
-  }
-);
+router.get('/user', checkAuth, UserController);
 
 export default router;
