@@ -2,6 +2,7 @@ import express from 'express';
 import authRoutes from './Routes/auth.route';
 import subsRoutes from './Routes/subs.route';
 import articlesRoutes from './Routes/articles.route';
+import commentsRoutes from './Routes/comments.route';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -22,6 +23,7 @@ mongoose
     app.use('/api/auth', authRoutes);
     app.use('/api/subs', subsRoutes);
     app.use('/api/articles', articlesRoutes);
+    app.use('/api/comments', commentsRoutes);
 
     app.listen(process.env.PORT || port, () => {
       console.log(`Listening to PORT ${port}`);

@@ -68,3 +68,14 @@ export const UserController = async (req: Request, res: Response) => {
     },
   });
 };
+
+export const GetUserByEmail = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.json(error);
+  }
+};

@@ -6,6 +6,7 @@ import JWT from 'jsonwebtoken';
 import { checkAuth } from '../middleware/checkAuth';
 import { stripe } from '../utils/stripe';
 import {
+  GetUserByEmail,
   SignInController,
   UserController,
 } from '../controllers/auth.controller';
@@ -87,5 +88,7 @@ router.post(
 router.post('/signin', SignInController);
 
 router.get('/user', checkAuth, UserController);
+
+router.get('/getUser/:email', GetUserByEmail);
 
 export default router;
