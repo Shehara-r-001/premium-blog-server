@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', GetCommentsByArticle);
+router.get('/:articleID', GetCommentsByArticle);
 
 router.post('/', PostComment);
 

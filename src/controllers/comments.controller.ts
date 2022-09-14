@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import Comment from '../Models/Comment';
 
-export const GetCommentsByArticle = async (req: Request, res: Response) => {};
+export const GetCommentsByArticle = async (req: Request, res: Response) => {
+  try {
+    const comments = await Comment.find({ articleID: req.params.articleID });
+    return res.status(200).json(comments);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const PostComment = async (req: Request, res: Response) => {
   const newComment = new Comment({
